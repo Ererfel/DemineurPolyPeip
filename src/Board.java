@@ -9,12 +9,13 @@ public class Board {
     int amountOfSafeUnreavealedSquare;
     Square[][] board;
 
-    public void Board(int line, int column, int xMine){
+    public Board(int line, int column, int xMine){
         this.amountOfLine = line;
         this.amountOfColumn = column;
         this.amountOfSquare = calculateAmountOfSquare(this.amountOfLine, this.amountOfColumn);
         this.amountOfMine = xMine;
         this.board = new Square[amountOfLine][amountOfColumn];
+        generateSquare();
     }
 
     public int getAmountOfLine() {
@@ -52,163 +53,43 @@ public class Board {
                     this.board[i][j]=square;}
             }
         }
+        for (int i = 0; i < this.amountOfSquare/this.amountOfLine; i ++) {
+            for (int j = 0; j < this.amountOfSquare / this.amountOfColumn; j++) {
+                this.board[i - 1][j - 1].setContent(CalculateAmountMinesAround(this.board, i, j));
+            }
+        }
+
     }
 
     public int calculateAmountOfSquare(int line, int column){
         int result = line*column;
         return result;
     }
+
+
     public int CalculateAmountMinesAround(Square[][] board, int i, int j) {
-        int n=0;
+        int n = 0;
         if(this.board[i][j].getContent()==-1) {return -1;}
-//Si la case est une mine
-        if(this.board[i][j].getContent()!=-1) {
-            if (i == 0) {//##########################  Vérification bord haut
-                if (j == 0) { //########################  Vérification bord gauche --> Coin haut gauche
-                    if (this.board[i][j + 1].getContent() == -1) {
-                        n++;
-                    }
-                    if (this.board[i + 1][j].getContent() == -1) {
-                        n++;
-                    }
-                    if (this.board[i + 1][j + 1].getContent() == -1) {
-                        n++;
-                    }
-                } else {
-                    if (j == 10) {  //#####################  Vérification bord droit --> Coin haut droit
-                        if (this.board[i][j - 1].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i + 1][j - 1].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i + 1][j].getContent() == -1) {
-                            n++;
-                        }
-                    } else { //########################  Vérification de tout le bord haut
-                        if (this.board[i][j - 1].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i][j + 1].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i + 1][j - 1].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i + 1][j].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i + 1][j + 1].getContent() == -1) {
-                            n++;
-                        }
-                    }
-                }
-            } else {
-                if (i == 10) {    //########################  Vérification bord bas
-                    if (j == 0) {  //###########################  Vérification bord gauche --> Coin bas gauche
-                        if (this.board[i - 1][j].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i - 1][j + 1].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i][j + 1].getContent() == -1) {
-                            n++;
-                        }
-                    } else {
-                        if (j == 10) {  //###########################  Vérification bord droit --> Coin bas droit
-                            if (this.board[i - 1][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i - 1][j].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                        } else {  // ###########################################"  Vérification de tout le bord bas
-                            if (this.board[i - 1][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i - 1][j].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i - 1][j + 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i][j + 1].getContent() == -1) {
-                                n++;
-                            }
-                        }
-                    }
-                } else {
-                    if (j == 0) {  // ##########################################  Vérification de tout le coté gauche
-                        if (this.board[i - 1][j + 1].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i][j + 1].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i + 1][j + 1].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i - 1][j].getContent() == -1) {
-                            n++;
-                        }
-                        if (this.board[i + 1][j].getContent() == -1) {
-                            n++;
-                        }
-                    } else {
-                        if (j == 10) {  // ##########################################  Vérification de tout le coté droit
-                            if (this.board[i - 1][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i + 1][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i - 1][j].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i + 1][j].getContent() == -1) {
-                                n++;
-                            }
-                        } else {   //  #################################################### Vérification au centre
-                            if (this.board[i - 1][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i - 1][j].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i - 1][j + 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i][j + 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i + 1][j].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i + 1][j + 1].getContent() == -1) {
-                                n++;
-                            }
-                            if (this.board[i + 1][j - 1].getContent() == -1) {
-                                n++;
-                            }
-                        }
-                    }
-                }
-            }
+        else {
+            try{ if (this.board[i - 1][j - 1].getContent() == -1) {n++;}}
+            catch(ArrayIndexOutOfBoundsException e){}
+            try{ if (this.board[i - 1][j].getContent() == -1) {n++;}}
+            catch(ArrayIndexOutOfBoundsException e){}
+            try{ if (this.board[i - 1][j+1].getContent() == -1) {n++;}}
+            catch(ArrayIndexOutOfBoundsException e){}
+            try{ if (this.board[i][j-1].getContent() == -1) {n++;}}
+            catch(ArrayIndexOutOfBoundsException e){}
+            try{ if (this.board[i][j+11].getContent() == -1) {n++;}}
+            catch(ArrayIndexOutOfBoundsException e){}
+            try{ if (this.board[i+1][j-1].getContent() == -1) {n++;}}
+            catch(ArrayIndexOutOfBoundsException e){}
+            try{ if (this.board[i+1][j].getContent() == -1) {n++;}}
+            catch(ArrayIndexOutOfBoundsException e){}
+            try{ if (this.board[i+1][j+1].getContent() == -1) {n++;}}
+            catch(ArrayIndexOutOfBoundsException e){}
         }
-        return n;}
+        return n;
     }
+}
 
 

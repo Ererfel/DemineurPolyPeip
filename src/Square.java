@@ -10,6 +10,10 @@ public class Square {
     public int getContent() {
         return content;
     }
+
+    public void setContent(int content) {
+        this.content = content;
+    }
 }
 
 
