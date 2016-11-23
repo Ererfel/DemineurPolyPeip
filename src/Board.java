@@ -55,7 +55,7 @@ public class Board {
         }
         for (int i = 0; i < this.amountOfSquare/this.amountOfLine; i ++) {
             for (int j = 0; j < this.amountOfSquare / this.amountOfColumn; j++) {
-                this.board[i - 1][j - 1].setContent(CalculateAmountMinesAround(this.board, i, j));
+                this.board[i][j].setContent(CalculateAmountMinesAround(this.board, i, j));
             }
         }
 
@@ -90,6 +90,17 @@ public class Board {
         }
         return n;
     }
+
+    public int[][] afficheTableau(){
+        int[][] table = new int[this.amountOfLine][this.amountOfLine];
+        for (int i = 0; i < this.amountOfSquare/this.amountOfLine; i ++) {
+            for (int j = 0; j < this.amountOfSquare / this.amountOfColumn; j++) {
+                table[i][j] = this.board[i][j].getContent();
+            }
+        }
+        return table;
+    }
+
 }
 
 
