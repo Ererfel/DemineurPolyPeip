@@ -1,3 +1,6 @@
+package Model;
+
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Board {
@@ -57,7 +60,7 @@ public class Board {
 //                 Calcul du nombre de mine autour d'une case :
     public int CalculateAmountMinesAround(Square[][] board, int i, int j) {
         int n = 0;
-        if(this.board[i][j].getContent()==-1) {return -1;} // content de Square = -1 siginifie que le square contient une mine
+        if(this.board[i][j].getContent()==-1) {return -1;} // content de Model.Square = -1 siginifie que le square contient une mine
         else {
             try{ if (this.board[i - 1][j - 1].getContent() == -1) {n++;}}
             catch(ArrayIndexOutOfBoundsException e){}
@@ -81,32 +84,50 @@ public class Board {
 //#############                 Le "gros" générateur :              ###############
 
     public void generateSquare(){
+        generateBlankBoard();
         ArrayList listMinedSquare = generateXNumbers(this.amountOfMine, this.amountOfSquare);
         System.out.println(listMinedSquare);
+
         int t=0;// Le t sert à faire la conversion numéro de la case minée --> position dans la grille.
         for (int i = 0; i < this.amountOfLine; i ++){
             for (int j = 0; j < this.amountOfColumn; j ++){
                 if (listMinedSquare.contains(t)){
-                    Square trapSquare = new Square(-1);
-                    try{this.board[i][j]=trapSquare;}
-                    catch(ArrayIndexOutOfBoundsException e){
-                        System.out.println(i + "  " + j);
-                    }
-                }
-                else {
-                    Square freeSquare = new Square(0);
-                    try{this.board[i][j]=freeSquare;}
-                    catch(ArrayIndexOutOfBoundsException e){
-                        System.out.println(i + "  " + j);
-                    }
+                    placeMineHere(i,j);
                 }
                 t++;
             }
         }
 
-        for (int k = 0; k < this.amountOfLine; k ++) {  //Maintenant que les squares sont initialisés avec ou sans mine
-            for (int l = 0; l < this.amountOfColumn; l++) {// On calcule le nombre de mine autour pour les cases libres
-                this.board[k][l].setContent(CalculateAmountMinesAround(this.board, k, l));// qu'on met dans content des Squares
+
+    }
+
+    private void placeMineHere(int i, int j) {
+        try{this.board[i][j].setContent(-1);}
+        catch(ArrayIndexOutOfBoundsException e){
+            System.out.println(i + "  " + j);
+        }
+        for(int y = -1; y<2; y++){
+            for(int x = -1; x<2; x++){
+                try{
+                    Square square = board[i+y][j+x];
+
+                    if(square.getContent()!=-1){
+
+                        square.setContent(square.getContent()+1);
+                    }
+                }catch (ArrayIndexOutOfBoundsException e){
+
+                }
+            }
+
+        }
+    }
+
+    private void generateBlankBoard() {
+
+        for (int i = 0; i < this.amountOfLine; i ++){
+            for (int j = 0; j < this.amountOfColumn; j ++) {
+                board[i][j] = new Square(0);
             }
         }
 
@@ -129,6 +150,17 @@ public class Board {
         return table;
     }
 
+    public Square getSquare(Point position) {
+
+        try {
+            return board[(int) position.getY()][(int) position.getX()];
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            System.out.println("Index out of bound");
+        }
+        return null;
+    }
 }
 
 
