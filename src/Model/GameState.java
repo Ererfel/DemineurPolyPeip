@@ -10,12 +10,22 @@ public class GameState {
     private Board board;
     private Player player;
     private Long timer;
-    private boolean isLost;
+    // State int value describe gameState
+    // 0 - setted up
+    // 1 - Started
+    // 2 - Won
+    // 3 - Lost
+    private int state;
+    public static int INITIALSTATE = 0;
+    public static int STARTEDSTATE = 1;
+    public static int WONSTATE = 2;
+    public static int LOSTSTATE = 3;
+
     public GameState(int nbLine,int nbColumn, int nbMines){
         board = new Board(nbLine,nbColumn,nbMines);
         player = new Player();
         timer = 0L;
-        this.isLost =false;
+        this.state =INITIALSTATE;
 
     }
 
@@ -61,5 +71,9 @@ public class GameState {
 
     public Board getBoard() {
         return board;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

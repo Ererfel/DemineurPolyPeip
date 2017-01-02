@@ -17,19 +17,23 @@ public class Game {
      * Central Controler.Game
      */
     public Game(){
+        initGame();
         screen = new Screen(this);
     }
 
-    public void startGame() {
+    public void initGame() {
         // TODO: 01/12/16 overloaded methods for the start game with default parameters
-        startGame(10,10,10);
+        initGame(10,10,10);
     }
 
-    public void startGame(int nbLine, int nbColonne, int nbMines)
+    public void initGame(int nbLine, int nbColonne, int nbMines)
     {
         this.state = new GameState(nbLine,nbColonne,nbMines);
     }
-
+    public void startGame(){
+        state.setState(GameState.STARTEDSTATE);
+        // TODO: 28/12/16 complete startGame With necesarry methods
+    }
     //interface methods
     /**
      * Called by the case buttons
@@ -57,4 +61,5 @@ public class Game {
     public GameState getState() {
         return state;
     }
+
 }

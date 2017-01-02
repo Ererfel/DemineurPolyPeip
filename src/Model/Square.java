@@ -1,5 +1,7 @@
 package Model;
 
+import java.awt.*;
+
 /**
  *  content : -1= mine,0...8 nombre de mine
  *  state : 0 = revealed, 1 = hidden, 2 = flagued
@@ -7,11 +9,13 @@ package Model;
 public class Square {
     int content;
     int state;
+    private Point position;
 
 
-    public Square(int content) {
+    public Square(int content,Point position) {
         this.content = content;
         this.state = 1;
+        this.position = position;
     }
 
 
@@ -20,7 +24,7 @@ public class Square {
     }
 
     public void setContent(int content) {
-        System.out.println("setted content to "+String.valueOf(content));
+
         this.content = content;
     }
 
@@ -47,6 +51,10 @@ public class Square {
             return false;
         }
         return true;
+    }
+
+    public Point getPosition() {
+        return position;
     }
 }
 

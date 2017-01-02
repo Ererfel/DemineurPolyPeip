@@ -86,7 +86,7 @@ public class Board {
     public void generateSquare(){
         generateBlankBoard();
         ArrayList listMinedSquare = generateXNumbers(this.amountOfMine, this.amountOfSquare);
-        System.out.println(listMinedSquare);
+
 
         int t=0;// Le t sert à faire la conversion numéro de la case minée --> position dans la grille.
         for (int i = 0; i < this.amountOfLine; i ++){
@@ -127,7 +127,7 @@ public class Board {
 
         for (int i = 0; i < this.amountOfLine; i ++){
             for (int j = 0; j < this.amountOfColumn; j ++) {
-                board[i][j] = new Square(0);
+                board[i][j] = new Square(0,new Point(i,j));
             }
         }
 
@@ -160,6 +160,10 @@ public class Board {
             System.out.println("Index out of bound");
         }
         return null;
+    }
+
+    public Square[][] getGrid() {
+        return board;
     }
 }
 
