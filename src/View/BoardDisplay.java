@@ -8,12 +8,13 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 // TODO: 24/12/16 relier les boutons au fonction traitant les clicks
 /**
  * Created by user on 02/12/16.
  */
 public class BoardDisplay extends JPanel implements ComponentListener{
-    ArrayList<SquareDisplay> displaysGrid;
+    HashMap<Square,SquareDisplay> displaysGrid;
     Board board;
     GridBagLayout layout;
     private Screen screen;
@@ -25,8 +26,9 @@ public class BoardDisplay extends JPanel implements ComponentListener{
     Insets gridInsets;
     private boolean needSizeUpdate = false;
 
-    BoardDisplay(Board board) {
+    BoardDisplay(Board board, Screen screen) {
         this.board = board;
+        this.screen = screen;
         layout = new GridBagLayout();
         setLayout(layout);
         this.setBackground(Color.gray);
@@ -34,11 +36,11 @@ public class BoardDisplay extends JPanel implements ComponentListener{
         addComponentListener(this);
     }
     private void setUpGrid(Square[][] grid){
-        displaysGrid = new ArrayList<>();
+        displaysGrid = new HashMap<>();
         GridBagConstraints constraints;
-        System.out.println("BoardDisplay.setUpGrid");
+        interSquareSpace = 2;
+        gridInsets = new Insets(interSquareSpace,interSquareSpace,interSquareSpace,interSquareSpace);
         int j = 0;
-        gridInsets = new Insets(5,5,5,5);
         for(Square[] line: grid){
             int i =0;
             for(Square square : line){
@@ -59,14 +61,9 @@ public class BoardDisplay extends JPanel implements ComponentListener{
                     constraints.gridx = i;
                     constraints.gridy = j;
                 }
-
-                String text = String.valueOf(constraints.gridx);
-                text +=":";
-                text += String.valueOf(constraints.gridy);
-                squareDisplay.setText(text);
-
+                squareDisplay.setText(String.valueOf(square.getContent()));
                 layout.addLayoutComponent(squareDisplay, constraints);
-                displaysGrid.add(squareDisplay);
+                displaysGrid.put(squareDisplay.getSquare(),squareDisplay);
                 squareDisplay.addMouseListener(new SquareClickListener(this));
                 add(squareDisplay);
 
@@ -77,10 +74,9 @@ public class BoardDisplay extends JPanel implements ComponentListener{
     }
      void updateGridSizes(){
 
-         System.out.println("BoardDisplay.updateGridSizes");
         int horizontalBorder = (int) (getWidth()*0.05);
         int verticalBorder = (int) (getHeight()*0.05);
-        setBorder(BorderFactory.createEmptyBorder(0,0,verticalBorder,horizontalBorder));
+        //setBorder(BorderFactory.createEmptyBorder(0,0,verticalBorder,horizontalBorder));
         setBorder(BorderFactory.createEmptyBorder(verticalBorder,horizontalBorder,verticalBorder,horizontalBorder));
 
         Dimension dim;
@@ -90,7 +86,6 @@ public class BoardDisplay extends JPanel implements ComponentListener{
         int height = getHeight() -verticalBorder*2;
 
         if(board!=null) {
-            System.out.println("adjusting size from board");
             adjustedWidth = (width-(board.getAmountOfColumn()+1)*interSquareSpace) / board.getAmountOfColumn();
             adjustedHeight = (height-(board.getAmountOfLine()+1)*interSquareSpace)/ board.getAmountOfLine();
         }
@@ -99,7 +94,7 @@ public class BoardDisplay extends JPanel implements ComponentListener{
             adjustedHeight = (height-(GRIDDIMENTION+1)*5)/ (GRIDDIMENTION);
         }
 
-        for(SquareDisplay display:displaysGrid){
+        for(SquareDisplay display:displaysGrid.values()){
             //gridInsets.set(adjustedHeight/10,adjustedHeight/10,adjustedHeight/10,adjustedHeight/10);
             dim = new Dimension(adjustedWidth, adjustedHeight);
 
@@ -143,7 +138,6 @@ public class BoardDisplay extends JPanel implements ComponentListener{
     @Override
     public void updateUI() {
         super.updateUI();
-        System.out.println("debug marker");
     }
     @Override
     public void componentResized(ComponentEvent e) {
@@ -152,21 +146,25 @@ public class BoardDisplay extends JPanel implements ComponentListener{
     }
     @Override
     public void componentMoved(ComponentEvent e) {
-        System.out.println("component moved");
+        ;
     }
     @Override
     public void componentShown(ComponentEvent e)
     {
-        System.out.println("BoardDisplay.componentShown");
+
     }
     @Override
-    public void componentHidden(ComponentEvent e) {
-        System.out.println("BoardDisplay.componentHidden");
+    public void componentHidden(ComponentEvent e) {}
+
+    public Screen getScreen() {
+        return screen;
     }
 
-    public void buttonClicked(SquareDisplay source) {
-
+    public void updateSquare(Square square) {
+        displaysGrid.get(square).update();
     }
+
+
 
     /*
 

@@ -27,6 +27,14 @@ public class Board {
         generateSquare();
     }
 
+    public void setAmountOfReavealedSquare(int amountOfReavealedSquare) {
+        this.amountOfReavealedSquare = amountOfReavealedSquare;
+    }
+
+    public int getAmountOfReavealedSquare() {
+        return amountOfReavealedSquare;
+    }
+
     public String calculDifficultyLevel(){
         String level;
         if (this.amountOfColumn==8 && this.amountOfLine==8 && this.amountOfMine==10){
@@ -152,7 +160,7 @@ public class Board {
 
         for (int i = 0; i < this.amountOfLine; i ++){
             for (int j = 0; j < this.amountOfColumn; j ++) {
-                board[i][j] = new Square(0,new Point(i,j));
+                board[i][j] = new Square(0,new Point(j,i));
             }
         }
 

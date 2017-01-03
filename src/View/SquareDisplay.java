@@ -17,4 +17,22 @@ public class SquareDisplay extends JButton{
     }
 
 
+    public Square getSquare() {
+        return square;
+    }
+
+    public void update() {
+        if(square.isReavealed())
+        {
+            setBackground(Color.LIGHT_GRAY);
+
+            if(square.getContent()==-1)
+            {setText("M");
+                setBackground(Color.red);
+            }
+            else if(square.getContent()!=0){
+                setText(String.valueOf(square.getContent()));
+            }
+        }
+    }
 }

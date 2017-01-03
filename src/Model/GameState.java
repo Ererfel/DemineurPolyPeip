@@ -1,8 +1,9 @@
 package Model;
 
 import java.awt.*;
-import java.io.*;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Controler.Game Model centraliser
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 public class GameState {
     private Board board;
     private Player player;
-    private Long timer;
+    private Long time;
     // State int value describe gameState
     // 0 - setted up
     // 1 - Started
@@ -25,17 +26,19 @@ public class GameState {
     public GameState(int nbLine,int nbColumn, int nbMines){
         board = new Board(nbLine,nbColumn,nbMines);
         player = new Player("default");
-        timer = 0L;
+        time = 0L;
         this.state =INITIALSTATE;
 
     }
 
     public void gameOver() {
-        savePlayerScore();
+        if (state != LOSTSTATE) {
+            savePlayerScore();
+        }
     }
 
     private void savePlayerScore() {
-        int score = timer.intValue()/1000;
+        int score = time.intValue()/1000;
         if (board.getDifficultyLevel()!="personalised"){
         Save r = new Save(board.getDifficultyLevel(), score, player);}
         else {
@@ -44,34 +47,36 @@ public class GameState {
         }
     }
 
-    private long calculPersonalisedPlayerScore(){
-        int col = board.getAmountOfColumn();
-        int line = board.getAmountOfLine();
-        int mine = board.getAmountOfMine();
-        long time = timer/1000;
-        long score = col*line*mine*time/1000 ;
-        return score;
-        }
 
 
-    public ArrayList<Point> revealSquare(Point position) {
+
+    public ArrayList<Square> revealSquare(Point position) {
         Square square = board.getSquare(position);
-        ArrayList<Point> reavealed = new ArrayList<Point>();
+        ArrayList<Square> reavealed = new ArrayList<>();
+
+        square.reaveal();
+        board.setAmountOfReavealedSquare(board.getAmountOfReavealedSquare()+1);
+        if(board.getAmountOfReavealedSquare()==(board.getAmountOfLine()*board.getAmountOfColumn())-board.getAmountOfMine())
+        {
+          win();
+
+        }
         if(square.getContent()== -1)
         {
             return null;
         }
         else {
-            square.reaveal();
+            reavealed.add(square);
             if (square.getContent() == 0) {
                 for (int x = -1; x <= 1; x++) {
                     for (int y = -1; y <= 1; y++) {
 
                         Point target = new Point(((int) position.getX()) + x, ((int) position.getY()) + y);
                         if(board.getSquare(target)!=null){
-                        if (!(y == 0 && x == 0) && !board.getSquare(target).isReavealed() && (board.getSquare(target).getContent() != -1))
+                        if (!(y == 0 && x == 0) && !board.getSquare(target).isReavealed()
+                                && (board.getSquare(target).getContent() != -1))
                         {
-                            ArrayList<Point> otherRevealed = revealSquare(target);
+                            ArrayList<Square> otherRevealed = revealSquare(target);
                             reavealed.addAll(otherRevealed);
                         }
                         }
@@ -80,6 +85,11 @@ public class GameState {
             }
             return reavealed;
         }
+    }
+
+    private void win() {
+        state = WONSTATE;
+
     }
 
     public void flagSquare(Point position) {
@@ -92,5 +102,37 @@ public class GameState {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public void startGame(){
+        state = STARTEDSTATE;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                time++;
+                System.out.println(time);
+            }
+        },1000,1000);
+
+    }
+    public void lose() {
+        this.state = LOSTSTATE;
+    }
+
+    public Long getTime() {
+        return time;
+    }
+
+    public boolean isStarted() {
+        return state == STARTEDSTATE;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public boolean isWon() {
+        return state == WONSTATE;
     }
 }

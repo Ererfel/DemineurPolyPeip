@@ -26,13 +26,18 @@ private BoardDisplay boardDisplay;
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("SquareClickListener.mouseReleased");
-        System.out.println(SwingUtilities.isLeftMouseButton(e));
-        boardDisplay.buttonClicked(((SquareDisplay) e.getSource()));
-        boardDisplay.gridInsets.set(100,100,100,100);
-        System.out.println("inset reglé");
-        System.out.println(((GridBagLayout)((SquareDisplay) e.getSource()).getParent().getLayout()).getConstraints(((SquareDisplay) e.getSource())).insets);
+        boardDisplay.getScreen().getGame().BoardClicked((((SquareDisplay) e.getSource())).getSquare().getPosition(),clickType(e));
 
+    }
+
+    private int clickType(MouseEvent e) {
+        if(SwingUtilities.isLeftMouseButton(e)){
+            return 1;
+        }
+        else if(SwingUtilities.isRightMouseButton(e)){
+            return 2;
+        }
+        return 0;
     }
 
     @Override

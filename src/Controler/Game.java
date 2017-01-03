@@ -1,6 +1,7 @@
 package Controler;
 
 import Model.GameState;
+import Model.Square;
 import View.Screen;
 
 import java.awt.*;
@@ -31,8 +32,8 @@ public class Game {
         this.state = new GameState(nbLine,nbColonne,nbMines);
     }
     public void startGame(){
-        state.setState(GameState.STARTEDSTATE);
-        // TODO: 28/12/16 complete startGame With necesarry methods
+
+        state.startGame();
     }
     //interface methods
     /**
@@ -43,13 +44,24 @@ public class Game {
     public void BoardClicked(Point position,int clickType)
     {
         if(clickType ==1) {
-            ArrayList<Point> squares = state.revealSquare(position);
-            screen.updateSquares(squares);
+            ArrayList<Square> squares = state.revealSquare(position);
+            if(squares != null) {
+                screen.updateSquares(squares);
+            }
+            else{
+                screen.updateSquare(state.getBoard().getSquare(position));
+                state.lose();
+                GameOver();
+            }
         }
         else if(clickType == 2)
         {
+
             state.flagSquare(position);
-            screen.updateSquare(position);
+            screen.updateSquare(state.getBoard().getSquare(position));
+        }
+        if(state.isWon()){
+            GameOver();
         }
     }
     public void GameOver()
@@ -62,4 +74,14 @@ public class Game {
         return state;
     }
 
+    public Screen getScreen() {
+        return screen;
+    }
+
+    public String getReadableTime() {
+        long time =state.getTime();
+        String readable = String.format("%d:%02d", time/60, time%60);
+
+        return readable;
+    }
 }

@@ -1,7 +1,7 @@
 package View;
 
 import Controler.Game;
-import Model.Board;
+import Model.Square;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,10 +20,11 @@ public class Screen extends JFrame implements WindowStateListener{
     private JPanel currentSide;
     private BoardDisplay grid ;
     private JPanel currentMain;
-
+    public  static Screen mainScreen;
     public Screen(Game game){
         //variable setup
         this.game = game;
+        mainScreen = this;
 
         //JFrame setUp opperations
         setTitle("DeminIt");
@@ -61,19 +62,18 @@ public class Screen extends JFrame implements WindowStateListener{
         add(sideContainer);
 
         // initial menu setup
+        setUpBoard();
         toMenu();
         //initial Board Creation
-        setUpBoard();
 
-        setSize(400,400);
+        setSize(500,500);
         addWindowStateListener(this);
     }
 
-    private void setUpBoard() {
+    void setUpBoard()
+    {
 
-            System.out.println("debug marker");
-            grid = new BoardDisplay(game.getState().getBoard());
-
+        grid = new BoardDisplay(game.getState().getBoard(), this);
         GridBagLayout layout = new GridBagLayout();
         mainContainer.setLayout(layout);
         mainContainer.removeAll();
@@ -90,36 +90,46 @@ public class Screen extends JFrame implements WindowStateListener{
 
     }
 
-    private boolean toMenu() {
-        currentSide = new menuDisplay().getMain();
+    void toMenu() {
+        sideContainer.removeAll();
+        currentSide = new menuDisplay(this).getMain();
 
         sideContainer.add(currentSide,BorderLayout.CENTER);
 
         //debug
-        sideContainer.setBackground(Color.blue);
+
         currentSide.setBackground(Color.black);
         //debug!
-        ajustSide();
-
-        return false;
+        revalidate();
     }
 
-    private void ajustSide() {
-        int width = sideContainer.getParent().getWidth();
-        sideContainer.setSize(width/4,sideContainer.getParent().getHeight());
-        mainContainer.setSize(width,mainContainer.getHeight());
+    public void gameMenu(){
+        if(!game.getState().isStarted()){
+            game.startGame();
+        }
+        sideContainer.removeAll();
+        GameMenu menu = new GameMenu(this);
+        currentSide = menu.getMain();
+        sideContainer.add(currentSide, BorderLayout.CENTER);
+        revalidate();
     }
-
     public void showEndGame() {
-        // TODO: 24/11/16 Show End Controler.Game Method
+        sideContainer.removeAll();
+
+        currentSide = new LostMenu(this);
+
+        sideContainer.add(currentSide);
+
     }
 
-    public void updateSquares(ArrayList<Point> squares) {
-        // TODO: 01/12/16 update Squares Method
+    public void updateSquares(ArrayList<Square> squares) {
+        for (Square square :  squares){
+            updateSquare(square);
+        }
     }
 
-    public void updateSquare(Point position) {
-        // TODO: 01/12/16 update square method
+    public void updateSquare(Square square) {
+        grid.updateSquare(square);
     }
 
     @Override
@@ -131,6 +141,13 @@ public class Screen extends JFrame implements WindowStateListener{
 
     }
 
-    // TODO: 24/11/16 Faire la class
+    public Game getGame() {
+        return game;
+    }
+
+    public String getTime() {
+        return game.getReadableTime();
+    }
+
 
 }
