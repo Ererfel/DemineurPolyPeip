@@ -90,30 +90,7 @@ public class Board {
         return listNumber;
     }
 
-//                 Calcul du nombre de mine autour d'une case :
-    public int CalculateAmountMinesAround(Square[][] board, int i, int j) {
-        int n = 0;
-        if(this.board[i][j].getContent()==-1) {return -1;} // content de Model.Square = -1 siginifie que le square contient une mine
-        else {
-            try{ if (this.board[i - 1][j - 1].getContent() == -1) {n++;}}
-            catch(ArrayIndexOutOfBoundsException e){}
-            try{ if (this.board[i - 1][j].getContent() == -1) {n++;}}
-            catch(ArrayIndexOutOfBoundsException e){}
-            try{ if (this.board[i - 1][j+1].getContent() == -1) {n++;}}
-            catch(ArrayIndexOutOfBoundsException e){}
-            try{ if (this.board[i][j-1].getContent() == -1) {n++;}}
-            catch(ArrayIndexOutOfBoundsException e){}
-            try{ if (this.board[i][j+11].getContent() == -1) {n++;}}
-            catch(ArrayIndexOutOfBoundsException e){}
-            try{ if (this.board[i+1][j-1].getContent() == -1) {n++;}}
-            catch(ArrayIndexOutOfBoundsException e){}
-            try{ if (this.board[i+1][j].getContent() == -1) {n++;}}
-            catch(ArrayIndexOutOfBoundsException e){}
-            try{ if (this.board[i+1][j+1].getContent() == -1) {n++;}}
-            catch(ArrayIndexOutOfBoundsException e){}
-        }
-        return n;
-    }
+
 //#############                 Le "gros" générateur :              ###############
 
     public void generateSquare(){

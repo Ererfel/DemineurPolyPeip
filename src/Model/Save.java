@@ -21,7 +21,7 @@ public class Save {
     }
 
     public int[][] getLastScore(){
-        String fichier = "save.txt";
+        String fichier = "BestScore.txt";
         int[][] list = new int[4][10];
 
         try {
@@ -42,6 +42,8 @@ public class Save {
             br.close();
         } catch (Exception e) {
             System.out.println(e.toString());
+            try{ BufferedWriter writer = new BufferedWriter(new FileWriter(new File("BestScore.txt")));}
+            catch(Exception s){}
         }
         return list;
     }
@@ -79,7 +81,7 @@ public class Save {
         }
     }
     public void writeScore(){
-        String fichier = "fichiertexte.txt";
+        String fichier = "BestScore.txt";
         try {
             FileWriter fw = new FileWriter (fichier);
             BufferedWriter bw = new BufferedWriter (fw);
