@@ -14,6 +14,7 @@ public class Save {
         this.result = results;
         this.player = player;
         bestScore(this.level, this.result);
+        writeScore();
     }
 
     public int[][] getLastScore(){
@@ -74,5 +75,22 @@ public class Save {
             }
         }
     }
-
-}
+    public void writeScore(){
+        String fichier = "fichiertexte.txt";
+        try {
+            FileWriter fw = new FileWriter (fichier);
+            BufferedWriter bw = new BufferedWriter (fw);
+            PrintWriter fichierSortie = new PrintWriter (bw);
+            fichierSortie.println ("Tableau des scores.");
+            for(int i = 0; i<4;i++){
+                for(int j = 0; j<5;j++) {
+                    fichierSortie.println(scoreList[i][j]);
+                }
+                }
+            fichierSortie.close();
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+        }
+    }
+    }
