@@ -8,6 +8,9 @@ public class Save {
     String level;
     int result;
     Player player;
+    public Save(){
+
+    }
     public Save(String lvl, int results, Player player){
         this.scoreList = getLastScore();
         this.level = lvl;
@@ -18,7 +21,7 @@ public class Save {
     }
 
     public int[][] getLastScore(){
-        String fichier = "fichiertexte.txt";
+        String fichier = "save.txt";
         int[][] list = new int[4][5];
 
         try {

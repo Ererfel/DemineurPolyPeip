@@ -135,4 +135,10 @@ public class GameState {
     public boolean isWon() {
         return state == WONSTATE;
     }
+
+    public int[][] getScores() {
+        Save save = new Save();
+
+        return save.getLastScore();
+    }
 }

@@ -163,4 +163,11 @@ public class Screen extends JFrame implements WindowStateListener{
         mainContainer.add(currentMain);
         mainContainer.revalidate();
     }
+
+    public void toScores() {
+        currentMain = new ScoreDisplay(game.getState().getScores()).getMain();
+        mainContainer.removeAll();
+        mainContainer.add(currentMain);
+        mainContainer.revalidate();
+    }
 }
