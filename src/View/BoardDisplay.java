@@ -51,7 +51,7 @@ public class BoardDisplay extends JPanel implements ComponentListener{
                 // margins of the tiles within the grid
                 constraints.insets = gridInsets;
                 //debug
-
+                constraints.fill = GridBagConstraints.BOTH;
                 if(square!=null) {
                     Point position = square.getPosition();
                     constraints.gridy = position.y;
@@ -61,7 +61,7 @@ public class BoardDisplay extends JPanel implements ComponentListener{
                     constraints.gridx = i;
                     constraints.gridy = j;
                 }
-                squareDisplay.setText(String.valueOf(square.getContent()));
+                //squareDisplay.setText(String.valueOf(square.getContent()));
                 layout.addLayoutComponent(squareDisplay, constraints);
                 displaysGrid.put(squareDisplay.getSquare(),squareDisplay);
                 squareDisplay.addMouseListener(new SquareClickListener(this));

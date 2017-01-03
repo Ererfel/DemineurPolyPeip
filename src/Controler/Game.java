@@ -23,8 +23,7 @@ public class Game {
     }
 
     public void initGame() {
-        // TODO: 01/12/16 overloaded methods for the start game with default parameters
-        initGame(10,10,10);
+        initGame(8,8,10);
     }
 
     public void initGame(int nbLine, int nbColonne, int nbMines)
@@ -34,6 +33,7 @@ public class Game {
     public void startGame(){
 
         state.startGame();
+
     }
     //interface methods
     /**
@@ -43,6 +43,10 @@ public class Game {
      */
     public void BoardClicked(Point position,int clickType)
     {
+        if(!state.isStarted()){
+            startGame();
+            screen.gameMenu();
+        }
         if(clickType ==1) {
             ArrayList<Square> squares = state.revealSquare(position);
             if(squares != null) {
@@ -86,7 +90,7 @@ public class Game {
     }
 
     public void newSettings(int[] settings) {
-        initGame(settings[1],settings[1],settings[2]);
+        initGame(settings[1],settings[0],settings[2]);
         screen.setUpBoard();
     }
 }

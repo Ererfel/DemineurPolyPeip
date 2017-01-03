@@ -91,6 +91,15 @@ public class Screen extends JFrame implements WindowStateListener{
     }
 
     void toMenu() {
+        toMenu(false);
+    }
+
+    void toMenu(boolean isSetted) {
+
+        if(!game.getState().isStarted()&& !isSetted){
+            game.initGame();
+            setUpBoard();
+        }
         sideContainer.removeAll();
         currentSide = new menuDisplay(this).getMain();
 
@@ -104,13 +113,17 @@ public class Screen extends JFrame implements WindowStateListener{
     }
 
     public void gameMenu(){
-        if(!game.getState().isStarted()){
-            game.startGame();
+        if(game.getState().isStarted()){
+            game.initGame();
         }
+        setUpBoard();
+        game.startGame();
         sideContainer.removeAll();
         GameMenu menu = new GameMenu(this);
         currentSide = menu.getMain();
         sideContainer.add(currentSide, BorderLayout.CENTER);
+        currentSide.setSize(100,currentSide.getParent().getHeight());
+
         revalidate();
     }
     public void showEndGame() {
@@ -119,7 +132,7 @@ public class Screen extends JFrame implements WindowStateListener{
         sideContainer.removeAll();
         if(game.getState().isWon())
         {
-            // TODO: 03/01/17 win menu
+            currentSide = new WonMenu(game.getState().generateScore()).getMain();
         }
         else{
             currentSide = new LostMenu(this);
@@ -160,14 +173,17 @@ public class Screen extends JFrame implements WindowStateListener{
     public void toSettings() {
         currentMain = new MenuSettings().getMain();
         mainContainer.removeAll();
-        mainContainer.add(currentMain);
+        mainContainer.setLayout(new BorderLayout());
+        mainContainer.setLayout(new BorderLayout());
+        mainContainer.add(currentMain,BorderLayout.CENTER);
         mainContainer.revalidate();
     }
 
     public void toScores() {
         currentMain = new ScoreDisplay(game.getState().getScores()).getMain();
         mainContainer.removeAll();
-        mainContainer.add(currentMain);
+        mainContainer.setLayout(new BorderLayout());
+        mainContainer.add(currentMain,BorderLayout.CENTER);
         mainContainer.revalidate();
     }
 }

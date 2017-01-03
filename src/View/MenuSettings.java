@@ -1,10 +1,9 @@
 package View;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.event.*;
 
 /**
  * Created by user on 03/01/17.
@@ -17,6 +16,7 @@ public class MenuSettings {
     private JComboBox gridSetting;
     private JPanel CustomSettings;
     private JButton OKButton;
+    private int width,height,mines;
 
     public MenuSettings() {
         gridSetting.addItem("Easy");
@@ -36,7 +36,7 @@ public class MenuSettings {
             public void mouseClicked(MouseEvent e) {
                 int[] settings = parseSettings();
                 Screen.mainScreen.getGame().newSettings(settings);
-                Screen.mainScreen.toMenu();
+                Screen.mainScreen.toMenu(true);
             }
 
             @Override
@@ -59,14 +59,56 @@ public class MenuSettings {
 
             }
         });
+        Width.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                width = Integer.parseInt(Width.getText());
+            }
+        });
+        Height.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                height = Integer.parseInt(Height.getText());
+            }
+        });
+        Mines.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                mines = Integer.parseInt(Mines.getText());
+            }
+        });
     }
 
     private int[] parseSettings() {
         int[] out = new int[3];
+        if(gridSetting.getSelectedIndex()==3){
+            out[0] = width;
+            out[1] = height;
+            out[2] = mines;
+            System.out.println("custom mode");
 
-        out[0] = Integer.parseInt(Width.getText());
-        out[1] = Integer.parseInt(Height.getText());
-        out[2] = Integer.parseInt(Mines.getText());
+        }
+        else{
+            out[0] = Integer.parseInt(Width.getText());
+            out[1] = Integer.parseInt(Height.getText());
+            out[2] = Integer.parseInt(Mines.getText());
+
+        }
 
         return out;
     }
@@ -106,7 +148,9 @@ public class MenuSettings {
             Height.setEditable(false);
             Mines.setText(mines);
             Mines.setEditable(false);
-
+            this.width = Integer.parseInt(width);
+            this.height = Integer.parseInt(height);
+            this.mines = Integer.parseInt(mines);
         }
     }
 

@@ -23,6 +23,7 @@ public class GameMenu {
                 timer.setText(screen.getTime());
             }
         }).start();
+        menu.setBorderPainted(false);
         menu.addMouseListener(new MenuButtonListener());
     }
 

@@ -38,17 +38,23 @@ public class GameState {
     }
 
     private void savePlayerScore() {
-        int score = time.intValue()/1000;
-        if (board.getDifficultyLevel()!="personalised"){
-        Save r = new Save(board.getDifficultyLevel(), score, player);}
-        else {
-            score = score*board.getAmountOfColumn()*board.getAmountOfLine()*board.getAmountOfMine()/1000;
-            Save r = new Save(board.getDifficultyLevel(),score, player);
-        }
+        int score = generateScore();
+
+        new Save(board.getDifficultyLevel(),score,player);
+
     }
 
 
 
+    public int generateScore(){
+        int score = time.intValue();
+        if (board.getDifficultyLevel()=="personalised"){
+            {            score = score*board.getAmountOfColumn()*board.getAmountOfLine()*board.getAmountOfMine()/1000;
+
+            }}
+        System.out.println(score);
+        return score;
+    }
 
     public ArrayList<Square> revealSquare(Point position) {
         Square square = board.getSquare(position);
@@ -141,4 +147,6 @@ public class GameState {
 
         return save.getLastScore();
     }
+
+
 }

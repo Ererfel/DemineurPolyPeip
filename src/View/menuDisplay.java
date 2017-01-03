@@ -14,6 +14,7 @@ public class menuDisplay {
     private JButton scoresButton;
     private JButton settingsButton;
     private JPanel main;
+    private JButton quitButton;
     Screen screen;
     public menuDisplay(Screen screen){
         this.screen = screen;
@@ -21,6 +22,8 @@ public class menuDisplay {
         playButton.setBorderPainted(false);
         scoresButton.setBorderPainted(false);
         settingsButton.setBorderPainted(false);
+        quitButton.setBorderPainted(false);
+
         playButton.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -99,6 +102,33 @@ public class menuDisplay {
 
             }
         });
+        quitButton.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Screen.mainScreen.dispose();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
     }
     public JPanel getMain(){
         return main;

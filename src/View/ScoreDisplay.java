@@ -75,7 +75,7 @@ public class ScoreDisplay {
         {
             int i = 0 ;
             while(i<10){
-                list[i].setText(String.valueOf(scores[i]));
+                list[i].setText(String.valueOf(scores[9-i]));
                 i++;
             }
         }
