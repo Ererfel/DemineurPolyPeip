@@ -84,4 +84,9 @@ public class Game {
 
         return readable;
     }
+
+    public void newSettings(int[] settings) {
+        initGame(settings[1],settings[1],settings[2]);
+        screen.setUpBoard();
+    }
 }

@@ -70,7 +70,7 @@ public class Screen extends JFrame implements WindowStateListener{
         addWindowStateListener(this);
     }
 
-    void setUpBoard()
+    public void setUpBoard()
     {
 
         grid = new BoardDisplay(game.getState().getBoard(), this);
@@ -114,9 +114,16 @@ public class Screen extends JFrame implements WindowStateListener{
         revalidate();
     }
     public void showEndGame() {
-        sideContainer.removeAll();
 
-        currentSide = new LostMenu(this);
+
+        sideContainer.removeAll();
+        if(game.getState().isWon())
+        {
+            // TODO: 03/01/17 win menu
+        }
+        else{
+            currentSide = new LostMenu(this);
+        }
 
         sideContainer.add(currentSide);
 
@@ -150,4 +157,10 @@ public class Screen extends JFrame implements WindowStateListener{
     }
 
 
+    public void toSettings() {
+        currentMain = new MenuSettings().getMain();
+        mainContainer.removeAll();
+        mainContainer.add(currentMain);
+        mainContainer.revalidate();
+    }
 }
