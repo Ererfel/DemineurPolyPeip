@@ -22,7 +22,7 @@ public class Save {
 
     public int[][] getLastScore(){
         String fichier = "save.txt";
-        int[][] list = new int[4][5];
+        int[][] list = new int[4][10];
 
         try {
             InputStream ips = new FileInputStream(fichier);
@@ -32,7 +32,7 @@ public class Save {
             int score;
             br.readLine();
             for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 5; j++){
+                for (int j = 0; j < 10; j++){
                 ligne = br.readLine();
                 score = Integer.parseInt(ligne);
                 System.out.print(score + "--");
@@ -73,7 +73,7 @@ public class Save {
     public void debogScoreList(){
         System.out.println("");
         for(int i = 0; i<4 ;i++){
-            for(int j = 0; j<5 ;j++){
+            for(int j = 0; j<10 ;j++){
                 System.out.print(this.scoreList[i][j]+"--");
             }
         }
@@ -86,7 +86,7 @@ public class Save {
             PrintWriter fichierSortie = new PrintWriter (bw);
             fichierSortie.println ("Tableau des scores.");
             for(int i = 0; i<4;i++){
-                for(int j = 0; j<5;j++) {
+                for(int j = 0; j<10;j++) {
                     fichierSortie.println(scoreList[i][j]);
                 }
                 }
