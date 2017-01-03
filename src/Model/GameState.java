@@ -1,6 +1,7 @@
 package Model;
 
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +24,7 @@ public class GameState {
 
     public GameState(int nbLine,int nbColumn, int nbMines){
         board = new Board(nbLine,nbColumn,nbMines);
-        player = new Player();
+        player = new Player("default");
         timer = 0L;
         this.state =INITIALSTATE;
 
@@ -34,8 +35,24 @@ public class GameState {
     }
 
     private void savePlayerScore() {
-        //// TODO: 24/11/16 Save Model.Player Score Method
+        int score = timer.intValue()/1000;
+        if (board.getDifficultyLevel()!="personalised"){
+        Save r = new Save(board.getDifficultyLevel(), score, player);}
+        else {
+            score = score*board.getAmountOfColumn()*board.getAmountOfLine()*board.getAmountOfMine()/1000;
+            Save r = new Save(board.getDifficultyLevel(),score, player);
+        }
     }
+
+    private long calculPersonalisedPlayerScore(){
+        int col = board.getAmountOfColumn();
+        int line = board.getAmountOfLine();
+        int mine = board.getAmountOfMine();
+        long time = timer/1000;
+        long score = col*line*mine*time/1000 ;
+        return score;
+        }
+
 
     public ArrayList<Point> revealSquare(Point position) {
         Square square = board.getSquare(position);

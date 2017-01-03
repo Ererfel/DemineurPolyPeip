@@ -3,11 +3,16 @@ package Model;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Board generation
+ */
+
 public class Board {
-    int amountOfMine;
-    int amountOfSquare;
-    int amountOfLine;
-    int amountOfColumn;
+    private int amountOfMine;
+    private int amountOfSquare;
+    private int amountOfLine;
+    private int amountOfColumn;
+    private String difficultyLevel;
     int amountOfReavealedSquare;
     int amountOfSafeUnreavealedSquare;
     Square[][] board;   //Notre tableau contenant les Squares (cases )
@@ -17,8 +22,24 @@ public class Board {
         this.amountOfColumn = column;
         this.amountOfSquare = calculateAmountOfSquare(this.amountOfLine, this.amountOfColumn);
         this.amountOfMine = xMine;
+        this.difficultyLevel = calculDifficultyLevel();
         this.board = new Square[this.amountOfLine][this.amountOfColumn];
         generateSquare();
+    }
+
+    public String calculDifficultyLevel(){
+        String level;
+        if (this.amountOfColumn==8 && this.amountOfLine==8 && this.amountOfMine==10){
+            level = "default";
+        }
+        else if (this.amountOfColumn==12 && this.amountOfLine==12 && this.amountOfMine==15){
+            level = "medium";
+        }
+        else if (this.amountOfColumn==15 && this.amountOfLine==15 && this.amountOfMine==20){
+            level = "hard";
+        }
+        else { level = "personalised" ;}
+        return level;
     }
 
     public int getAmountOfLine() {
@@ -29,9 +50,13 @@ public class Board {
         return amountOfColumn;
     }
 
+    public int getAmountOfMine() { return amountOfMine; }
 
+    public String getDifficultyLevel() {
+        return difficultyLevel;
+    }
 
-/* ##################################################################################################
+    /* ##################################################################################################
 #                                                                                                   #
 #                                   Génération de la grille                                         #
 #                                                                                                   #
